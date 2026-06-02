@@ -1,0 +1,32 @@
+.About {
+    min-height: 100vh;
+    padding: 80px 10%;
+    background: radial-gradient(circle at top, #343a55, #111216 55%);
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+.about-card {
+    max-width: 850px;
+    margin: auto;
+    padding: 40px;
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+}
+
+.about-card h1 {
+    font-size: 42px;
+    margin-bottom: 20px;
+}
+
+.about-card h2 {
+    margin-top: 30px;
+    color: #93c5fd;
+}
+
+.about-card p {
+    font-size: 18px;
+    line-height: 1.8;
+}
