@@ -1,0 +1,131 @@
+{
+  "info": {
+    "_postman_id": "e35f94e2-abd3-48d8-b99a-3f4ab3ab3989",
+    "name": "gpt_project",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "43057989"
+  },
+  "item": [
+    {
+      "name": "ask_gpt",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"conversation_id\": \"6a1d68ec71dfe566b47f1e88\",\n    \"content\": \"שלום מה נשמע\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:4000/api/chat",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "4000",
+          "path": [
+            "api",
+            "chat"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Conversation",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n   \n    \"content\": \"שלום\"\n   \n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:4000/api/chat/6a1d638ede001c8c98cf0793",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "4000",
+          "path": [
+            "api",
+            "chat",
+            "6a1d638ede001c8c98cf0793"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "conversation",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"title\": \"new Conversation\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:4000/api/conversation",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "4000",
+          "path": [
+            "api",
+            "conversation"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Conversation",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"title\": \"שיחה ראשונה\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:4000/api/conversation/6a1d45b099f4887948249b4b",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "4000",
+          "path": [
+            "api",
+            "conversation",
+            "6a1d45b099f4887948249b4b"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
