@@ -1,124 +1,198 @@
 .Home {
     min-height: 100vh;
-    padding: 60px 8%;
-    background: radial-gradient(circle at top, #343a55, #111216 55%);
-    color: #f5f5f5;
-    font-family: Arial, sans-serif;
-    text-align: center;
+    padding: 40px 6%;
+    background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.35), transparent 35%),
+        radial-gradient(circle at top right, rgba(251, 146, 60, 0.32), transparent 35%),
+        linear-gradient(135deg, #f8fbff, #eef9ff 45%, #fff7ed);
+    color: #1f2937;
+    font-family: "Segoe UI", Arial, sans-serif;
 }
 
-.Home h1 {
-    font-size: 54px;
-    margin-bottom: 20px;
-}
-
-.Home h2 {
-    margin: 24px 0;
+.Home > h2 {
+    font-size: 42px;
+    margin-bottom: 22px;
+    color: #0f172a;
 }
 
 .new-conversation-btn {
-    padding: 12px 26px;
+    padding: 14px 30px;
     border: none;
     border-radius: 999px;
-    background: linear-gradient(135deg, #7c3aed, #2563eb);
+    background: linear-gradient(135deg, #fb923c, #38bdf8);
     color: white;
-    font-size: 16px;
-    font-weight: bold;
+    font-size: 17px;
+    font-weight: 800;
     cursor: pointer;
-    box-shadow: 0 10px 30px rgba(37, 99, 235, 0.35);
+    box-shadow: 0 14px 35px rgba(56, 189, 248, 0.35);
+    transition: 0.25s;
 }
 
 .new-conversation-btn:hover {
-    transform: translateY(-2px);
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 18px 45px rgba(251, 146, 60, 0.38);
 }
 
 .conversation-list {
-    max-width: 850px;
-    margin: 30px auto;
-    display: flex;
-    flex-direction: column;
+    max-width: 900px;
+    margin: 35px auto;
+    display: grid;
     gap: 14px;
 }
 
 .conversation-item {
-    padding: 18px;
-    border-radius: 18px;
-    background: rgba(255, 255, 255, 0.08);
+    padding: 18px 22px;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.78);
+    border: 1px solid rgba(56, 189, 248, 0.25);
     cursor: pointer;
-    transition: 0.2s;
+    transition: 0.25s;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    backdrop-filter: blur(14px);
+}
+
+.conversation-item h3::before {
+    content: "💬 ";
 }
 
 .conversation-item:hover,
 .conversation-item.selected {
-    background: rgba(124, 58, 237, 0.35);
-    transform: scale(1.02);
+    background: linear-gradient(135deg, #ffffff, #e0f7ff);
+    border-color: #fb923c;
+    transform: translateY(-3px);
 }
 
 .selected-conversation {
-    max-width: 900px;
+    max-width: 950px;
     margin: 40px auto 0;
     padding: 28px;
-    border-radius: 24px;
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(12px);
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.82);
+    border: 1px solid rgba(251, 146, 60, 0.25);
+    box-shadow: 0 25px 70px rgba(15, 23, 42, 0.12);
+    backdrop-filter: blur(18px);
+}
+
+.selected-conversation h2 {
+    color: #0284c7;
 }
 
 .messages {
+    height: 430px;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 16px;
-    margin: 30px 0;
+    margin: 28px 0;
+    padding: 18px;
+    border-radius: 22px;
+    background: linear-gradient(180deg, #f8fdff, #fff7ed);
 }
 
 .message {
-    max-width: 70%;
+    max-width: 72%;
     padding: 14px 18px;
-    border-radius: 18px;
+    border-radius: 20px;
     text-align: right;
     line-height: 1.6;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    animation: popIn 0.25s ease;
+}
+
+.icon {
+    font-size: 20px;
+}
+
+.message p {
+    margin: 0;
 }
 
 .user-message {
     align-self: flex-end;
-    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    background: linear-gradient(135deg, #38bdf8, #0284c7);
+    color: white;
+    border-bottom-right-radius: 6px;
 }
 
 .assistant-message {
     align-self: flex-start;
-    background: rgba(255, 255, 255, 0.14);
-}
-
-.message strong {
-    display: block;
-    margin-bottom: 6px;
-    opacity: 0.8;
+    background: white;
+    color: #1f2937;
+    border: 1px solid rgba(251, 146, 60, 0.3);
+    border-bottom-left-radius: 6px;
 }
 
 .send-area {
     display: flex;
     gap: 12px;
-    margin-top: 24px;
+    padding: 12px;
+    border-radius: 999px;
+    background: white;
+    box-shadow: 0 12px 35px rgba(15, 23, 42, 0.1);
 }
 
 .send-area input {
     flex: 1;
-    padding: 14px 18px;
+    padding: 15px 20px;
     border-radius: 999px;
-    border: none;
+    border: 1px solid #bae6fd;
     outline: none;
     font-size: 16px;
+    background: #f8fdff;
+}
+
+.send-area input:focus {
+    border-color: #fb923c;
+    box-shadow: 0 0 0 4px rgba(251, 146, 60, 0.15);
 }
 
 .send-area button {
     padding: 0 28px;
     border: none;
     border-radius: 999px;
-    background: linear-gradient(135deg, #22c55e, #16a34a);
+    background: linear-gradient(135deg, #fb923c, #f97316);
     color: white;
-    font-weight: bold;
+    font-weight: 800;
     cursor: pointer;
+    transition: 0.2s;
 }
 
 .send-area button:hover {
-    transform: scale(1.05);
+    transform: scale(1.06);
+}
+
+@keyframes popIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 700px) {
+    .Home {
+        padding: 28px 4%;
+    }
+
+    .selected-conversation {
+        padding: 18px;
+    }
+
+    .message {
+        max-width: 90%;
+    }
+
+    .send-area {
+        border-radius: 22px;
+        flex-direction: column;
+    }
+
+    .send-area button {
+        padding: 14px;
+    }
 }

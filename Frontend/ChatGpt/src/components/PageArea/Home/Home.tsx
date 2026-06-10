@@ -4,8 +4,14 @@ import type { Conversation } from "../../../Models/ConversationModel";
 import { conversationService } from "../../../Service/ConversationService";
 import type { Message } from "../../../Models/MessageModel";
 import { chatService } from "../../../Service/chatService";
+import { useTitle } from "../../../Utils/UseTitle";
+
+
 
 export function Home() {
+
+
+    useTitle("Home 🏠")
 
     const [conversations, setConversations] = useState<Conversation[]>([]);
     const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null)
@@ -67,6 +73,8 @@ export function Home() {
 
 
     async function addConversation(){
+        console.log("Button click...");
+        
         try {
             const newConversation = await conversationService.addConversation({title: "New Conversation"});
 
@@ -88,7 +96,7 @@ export function Home() {
         <div className="Home">
            <h2>Conversation</h2>
 
-           <button className="new-conversation" onClick={addConversation}> How can i help you 🙏</button>
+           <button className="new-conversation-btn" onClick={addConversation}> How can i help you 🙏</button>
 
            <div className="conversation-list">
             {conversations.map(conversation => (
@@ -112,10 +120,14 @@ export function Home() {
                     <div className="messages">
 
                         {messages.map(message => (
-                            <div key={message._id} className= {
-                                message.role == "user" ? "message user-message" : "message assistant-message"
-                            }>
-                                <strong>{message.role}</strong>
+                            <div 
+                                key={message._id}
+                                className= {message.role == "user" ? "message user-message" : "message assistant-message"}
+                            >
+                                <span className="icon">
+                                    {message.role === "user" ? "👤" : "🤖"}
+
+                                </span>
                                 <p>{message.content}</p>
 
                             </div>
