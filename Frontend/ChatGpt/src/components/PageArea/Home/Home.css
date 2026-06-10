@@ -1,4 +1,5 @@
 .Home {
+    position: relative;
     min-height: 100vh;
     padding: 40px 6%;
     background:
@@ -9,23 +10,63 @@
     font-family: "Segoe UI", Arial, sans-serif;
 }
 
-.Home > h2 {
+.home-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    max-width: 62%;
+    overflow: visible;
+}
+
+.gpt-home-image {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 38%;
+    height: 100vh;
+    object-fit: cover;
+    object-position: center;
+    z-index: 0;
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(to left, black 75%, transparent);
+    mask-image: linear-gradient(to left, black 75%, transparent);
+}
+
+.home-content h2 {
     font-size: 42px;
     margin-bottom: 22px;
     color: #0f172a;
 }
 
 .new-conversation-btn {
-    padding: 14px 30px;
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    max-width: 100%;
+    padding: 14px 28px;
     border: none;
     border-radius: 999px;
     background: linear-gradient(135deg, #fb923c, #38bdf8);
     color: white;
-    font-size: 17px;
-    font-weight: 800;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.5;
     cursor: pointer;
     box-shadow: 0 14px 35px rgba(56, 189, 248, 0.35);
     transition: 0.25s;
+    overflow: visible;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.new-conversation-label {
+    display: block;
+    white-space: normal;
+    text-align: center;
 }
 
 .new-conversation-btn:hover {
@@ -34,8 +75,9 @@
 }
 
 .conversation-list {
+    width: 100%;
     max-width: 900px;
-    margin: 35px auto;
+    margin: 35px 0 0;
     display: grid;
     gap: 14px;
 }
@@ -198,6 +240,16 @@
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+@media (max-width: 900px) {
+    .home-content {
+        max-width: 100%;
+    }
+
+    .gpt-home-image {
+        display: none;
     }
 }
 

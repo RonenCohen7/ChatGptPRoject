@@ -6,7 +6,7 @@ import type { Message } from "../../../Models/MessageModel";
 import { chatService } from "../../../Service/chatService";
 import { useTitle } from "../../../Utils/UseTitle";
 import { notify } from "../../../Utils/Notify";
-
+import gpt_home_image from "../../../asstets/gpt_home_image.jpeg";
 
 
 export function Home() {
@@ -116,9 +116,13 @@ export function Home() {
 
     return (
         <div className="Home">
+           <img src={gpt_home_image} alt="" className="gpt-home-image" aria-hidden="true" />
+           <div className="home-content">
            <h2>Conversation</h2>
 
-           <button className="new-conversation-btn" onClick={addConversation}> How can i help you 🙏</button>
+           <button type="button" className="new-conversation-btn" onClick={addConversation}>
+                <span className="new-conversation-label">I'm ready to chat 🙏 click here</span>
+           </button>
 
            <div className="conversation-list">
             {conversations.map(conversation => (
@@ -172,6 +176,7 @@ export function Home() {
                    </div>
                 </div>
              )}
+           </div>
         </div>
 
     );
