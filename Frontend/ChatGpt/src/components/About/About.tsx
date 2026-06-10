@@ -1,13 +1,13 @@
-import "./About.css"
+import "./About.css";
 
-
-
-export function About(){
+export function About() {
     return (
         <div className="About">
             <div className="about-card">
-                <h1>About ChatGpt 🤖</h1>
-                <p>
+
+                <div className="about-badge">🤖 Full Stack AI Project</div>
+
+                <h1>About ChatGPT</h1>
 
                 <p>
                     This project is a full stack ChatGPT web application.
@@ -15,19 +15,19 @@ export function About(){
                     and receive answers from OpenAI through a Python FastAPI backend.
                 </p>
 
-                <h2>Technologies</h2>
-                <p>
-                    React, TypeScript, Python, FastAPI, MongoDB, REST API, OpenAI API.
-                </p>
+                <div className="about-section">
+                    <h2>Technologies</h2>
+                    <p>
+                        React • TypeScript • Python • FastAPI • MongoDB • REST API • OpenAI API
+                    </p>
+                </div>
 
-                <h2>Developer</h2>
-                <p>
-                    Developed by Ronen Cohen.
-                </p>
-                </p>
+                <div className="about-section">
+                    <h2>Developer</h2>
+                    <p>Developed by Ronen Cohen 👨‍💻</p>
+                </div>
 
             </div>
-
         </div>
-    )
+    );
 }

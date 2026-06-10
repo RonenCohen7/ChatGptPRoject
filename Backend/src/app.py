@@ -1,9 +1,9 @@
-from importlib import reload
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 from controllers.chat_controller import router as chat_router
 from controllers.conversation_controller import router as conversation_router
 from middleware.exception_handler import register_exception_handlers
+from middleware.logger_middleware import LoggerMiddleware
 from uvicorn import run
 
 #start server fast api
@@ -21,6 +21,7 @@ server.add_middleware(
 
 
 #middleware
+server.add_middleware(LoggerMiddleware)
 register_exception_handlers(server)
 
 #controllers

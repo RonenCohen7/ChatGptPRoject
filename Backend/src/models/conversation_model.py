@@ -11,7 +11,7 @@ class Conversation(BaseModel):
                     max_length=100,
                     description="Conversation title")
     
-    created_at: datetime = Field(
+    create_at: datetime = Field(
                             default_factory=datetime.now,
                             description="Conversation creation date")
 

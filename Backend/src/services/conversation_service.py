@@ -3,6 +3,7 @@
 from datetime import datetime
 from bson import ObjectId
 from models.conversation_model import Conversation
+from services.message_service import MessageService
 from utils.dal import dal
 
 
@@ -50,6 +51,7 @@ class ConversationService:
     #Delete Conversation
     @staticmethod
     def delete_conversation(_id:str):
+        MessageService.delete_message_by_conversation(_id)
         collection = dal.get_collection("conversation")
         result = collection.delete_one({"_id": ObjectId(_id)})
         return result.deleted_count

@@ -3,5 +3,5 @@
 export interface Conversation {
     _id?: string;
     title: string;
-    createdAt?: string
+    create_at?: string
 }

@@ -1,32 +1,87 @@
 .About {
     min-height: 100vh;
-    padding: 80px 10%;
-    background: radial-gradient(circle at top, #343a55, #111216 55%);
-    color: white;
-    font-family: Arial, sans-serif;
+    padding: 40px 6%;
+    background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.35), transparent 35%),
+        radial-gradient(circle at top right, rgba(251, 146, 60, 0.32), transparent 35%),
+        linear-gradient(135deg, #f8fbff, #eef9ff 45%, #fff7ed);
+    color: #1f2937;
+    font-family: "Segoe UI", Arial, sans-serif;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .about-card {
     max-width: 850px;
-    margin: auto;
-    padding: 40px;
+    padding: 44px;
     border-radius: 28px;
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(12px);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+    background: rgba(255, 255, 255, 0.82);
+    border: 1px solid rgba(251, 146, 60, 0.25);
+    box-shadow: 0 25px 70px rgba(15, 23, 42, 0.12);
+    backdrop-filter: blur(18px);
+    text-align: center;
+    animation: popIn 0.25s ease;
+}
+
+.about-badge {
+    display: inline-block;
+    margin-bottom: 18px;
+    padding: 12px 22px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #fb923c, #38bdf8);
+    color: white;
+    font-weight: 800;
+    box-shadow: 0 14px 35px rgba(56, 189, 248, 0.25);
 }
 
 .about-card h1 {
     font-size: 42px;
-    margin-bottom: 20px;
+    margin-bottom: 22px;
+    color: #0f172a;
 }
 
 .about-card h2 {
-    margin-top: 30px;
-    color: #93c5fd;
+    margin-bottom: 10px;
+    color: #0284c7;
 }
 
 .about-card p {
     font-size: 18px;
     line-height: 1.8;
+    margin: 0;
+}
+
+.about-section {
+    margin-top: 28px;
+    padding: 22px;
+    border-radius: 22px;
+    background: linear-gradient(180deg, #f8fdff, #fff7ed);
+    border: 1px solid rgba(56, 189, 248, 0.25);
+}
+
+@keyframes popIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 700px) {
+    .About {
+        padding: 28px 4%;
+    }
+
+    .about-card {
+        padding: 28px 20px;
+    }
+
+    .about-card h1 {
+        font-size: 34px;
+    }
 }

@@ -1,4 +1,3 @@
-import collections
 from datetime import datetime
 
 from utils.dal import dal

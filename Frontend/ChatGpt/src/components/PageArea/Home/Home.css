@@ -41,6 +41,10 @@
 }
 
 .conversation-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
     padding: 18px 22px;
     border-radius: 22px;
     background: rgba(255, 255, 255, 0.78);
@@ -51,8 +55,31 @@
     backdrop-filter: blur(14px);
 }
 
+.conversation-item h3 {
+    margin: 0;
+    flex: 1;
+}
+
 .conversation-item h3::before {
     content: "💬 ";
+}
+
+.delete-conversation-btn {
+    flex-shrink: 0;
+    padding: 6px 10px;
+    border: none;
+    border-radius: 12px;
+    background: transparent;
+    font-size: 18px;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: 0.2s;
+}
+
+.delete-conversation-btn:hover {
+    opacity: 1;
+    background: rgba(239, 68, 68, 0.12);
+    transform: scale(1.1);
 }
 
 .conversation-item:hover,

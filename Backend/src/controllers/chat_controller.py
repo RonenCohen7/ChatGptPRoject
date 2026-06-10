@@ -37,9 +37,6 @@ def ask_chat_gpt(chat_schema: ChatSchema):
         "content": chat_schema.content
     })
 
-    print("HISTORY")
-    print(history)
-
     answer = OpenAiService.ask_chatGpt(history)
 
     assistant_message= MessageService.add_message(
@@ -47,10 +44,6 @@ def ask_chat_gpt(chat_schema: ChatSchema):
         content=answer,
         role="assistant"
     )
-
-
-    print("HISTORY")
-    print(history)
 
     return {
         "user_message":user_message,

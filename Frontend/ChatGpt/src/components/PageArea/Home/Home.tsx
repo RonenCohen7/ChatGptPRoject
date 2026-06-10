@@ -5,6 +5,7 @@ import { conversationService } from "../../../Service/ConversationService";
 import type { Message } from "../../../Models/MessageModel";
 import { chatService } from "../../../Service/chatService";
 import { useTitle } from "../../../Utils/UseTitle";
+import { notify } from "../../../Utils/Notify";
 
 
 
@@ -22,7 +23,7 @@ export function Home() {
     useEffect(()=>{
         conversationService.getAllConversations()
         .then(data => setConversations(data))
-        .catch(err => console.log(err));
+        .catch(err => notify.error(err));
 
     }, []);
 
@@ -36,14 +37,13 @@ export function Home() {
 
     async function selectConversation(conversation: Conversation){
         setSelectedConversation(conversation);
-        console.log("Select conversation");
 
         try {
             const data = await chatService.getMessagesByConversation(conversation._id!);
             setMessages(data)
         }
         catch (err) {
-            console.log(err);
+            notify.error(err);
 
         }
     }
@@ -66,15 +66,13 @@ export function Home() {
             setContent("")
         }
         catch (err) {
-            console.log(err);
+            notify.error(err);
 
         }
     }
 
 
     async function addConversation(){
-        console.log("Button click...");
-        
         try {
             const newConversation = await conversationService.addConversation({title: "New Conversation"});
 
@@ -83,8 +81,32 @@ export function Home() {
             setMessages([])
         }
         catch(err){
-            console.log(err);
+            notify.error(err);
 
+        }
+    }
+
+
+    async function deleteConversation(conversation: Conversation, event: React.MouseEvent){
+        event.stopPropagation();
+
+        const confirmed = window.confirm(`Delete "${conversation.title}"? This cannot be undone.`);
+        if (!confirmed) return;
+
+        try {
+            await conversationService.deleteConversation(conversation._id!);
+
+            setConversations(prev => prev.filter(c => c._id !== conversation._id));
+
+            if (selectedConversation?._id === conversation._id) {
+                setSelectedConversation(null);
+                setMessages([]);
+            }
+
+            notify.success("Conversation deleted");
+        }
+        catch (err) {
+            notify.error(err);
         }
     }
 
@@ -107,6 +129,13 @@ export function Home() {
                 onClick={()=> selectConversation(conversation)}
                 >
                     <h3>{conversation.title}</h3>
+                    <button
+                        className="delete-conversation-btn"
+                        title="Delete conversation"
+                        onClick={(e) => deleteConversation(conversation, e)}
+                    >
+                        🗑️
+                    </button>
                 </div>
              ))}
 
