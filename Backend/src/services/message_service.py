@@ -7,14 +7,15 @@ class MessageService:
     
     #Add new message
     @staticmethod
-    def add_message(conversation_id: str, content:str, role:str):
+    def add_message(conversation_id: str, content: str, role: str, content_type: str = "text"):
         collection = dal.get_collection("message")
 
-        message ={
+        message = {
             "conversation_id": conversation_id,
             "content": content,
             "role": role,
-            "create_at":datetime.utcnow()
+            "content_type": content_type,
+            "create_at": datetime.utcnow()
         }
 
         result = collection.insert_one(message)
@@ -37,6 +38,8 @@ class MessageService:
         for message in messages:
             message["_id"] = str(message["_id"])
             message["create_at"] = str(message["create_at"])
+            if "content_type" not in message:
+                message["content_type"] = "text"
         return messages
 
 

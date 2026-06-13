@@ -5,6 +5,7 @@
 
 # ---- Python (Backend) ----
 Backend/env/
+Backend/generated/
 venv/
 .venv/
 __pycache__/

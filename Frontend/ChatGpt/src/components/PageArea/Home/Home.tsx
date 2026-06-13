@@ -6,6 +6,7 @@ import type { Message } from "../../../Models/MessageModel";
 import { chatService } from "../../../Service/chatService";
 import { useTitle } from "../../../Utils/UseTitle";
 import { notify } from "../../../Utils/Notify";
+import { appConfig } from "../../../Utils/AppConfig";
 import gpt_home_image from "../../../asstets/gpt_home_image.jpeg";
 
 
@@ -18,7 +19,10 @@ export function Home() {
     const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null)
     const [messages, setMessages] = useState<Message[]>([]);
     const [content, setContent] = useState("");
-    const messagesEndRef = useRef<HTMLDivElement>(null)
+    const [isLoading, setIsLoading] = useState(false);
+    const messagesEndRef = useRef<HTMLDivElement>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
+
 
     useEffect(()=>{
         conversationService.getAllConversations()
@@ -33,6 +37,12 @@ export function Home() {
             behavior: "smooth"
         })
     },[messages])
+
+    useEffect(() => {
+        if (!isLoading && selectedConversation) {
+            inputRef.current?.focus();
+        }
+    }, [isLoading, selectedConversation]);
 
 
     async function selectConversation(conversation: Conversation){
@@ -51,8 +61,10 @@ export function Home() {
     async function sendMessage(){
         if(!selectedConversation) return;
         if(!content.trim()) return;
+        if(isLoading) return;
 
         try {
+            setIsLoading(true);
             const result = await chatService.sendMessage(
                 selectedConversation._id!,
                 content
@@ -69,6 +81,36 @@ export function Home() {
             notify.error(err);
 
         }
+        finally {
+            setIsLoading(false);
+        }
+    }
+
+
+    function renderMessageContent(message: Message) {
+        const contentType = message.content_type ?? "text";
+
+        if (contentType === "image") {
+            return (
+                <img
+                    src={`${appConfig.serverUrl}${message.content}`}
+                    alt="Generated"
+                    className="message-media"
+                />
+            );
+        }
+
+        if (contentType === "video") {
+            return (
+                <video
+                    controls
+                    src={`${appConfig.serverUrl}${message.content}`}
+                    className="message-media"
+                />
+            );
+        }
+
+        return <p>{message.content}</p>;
     }
 
 
@@ -161,18 +203,38 @@ export function Home() {
                                     {message.role === "user" ? "👤" : "🤖"}
 
                                 </span>
-                                <p>{message.content}</p>
+                                {renderMessageContent(message)}
 
                             </div>
                         ))}
+                        {isLoading && (
+                            <div className="message assistant-message loading-message">
+                                <span className="icon">🤖</span>
+                                <p>מייצר וידאו... (עשוי לקחת מספר דקות)</p>
+                            </div>
+                        )}
                         <div ref={messagesEndRef}></div>
 
                     </div>
 
                    <div className="send-area">
-                        <input type="text" value={content} onChange={e => setContent(e.target.value)} placeholder="Write your message"/>
+                        <input 
+                        ref={inputRef}
+                        type="text" value={content} 
+                        onChange={e => setContent(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                sendMessage();
+                            }
+                        }}
+                          
+                        
+                        placeholder="Write your message"
+                        disabled={isLoading}/>
 
-                        <button onClick={sendMessage}>Send</button>
+                        <button onClick={sendMessage} disabled={isLoading}>
+                            {isLoading ? "..." : "Send"}
+                        </button>
                    </div>
                 </div>
              )}

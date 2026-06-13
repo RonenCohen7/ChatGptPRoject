@@ -21,6 +21,10 @@ class Message(BaseModel):
         max_length=5000,
         description="Message content"
     )
+    content_type: Literal["text", "image", "video"] = Field(
+        default="text",
+        description="Message content type"
+    )
     create_at: datetime = Field(
         default_factory=datetime.now,
         description="Message creation date"

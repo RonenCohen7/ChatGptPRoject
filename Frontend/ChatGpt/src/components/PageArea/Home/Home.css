@@ -178,6 +178,28 @@
     margin: 0;
 }
 
+.message-media {
+    max-width: 100%;
+    border-radius: 12px;
+    display: block;
+}
+
+.loading-message p {
+    font-style: italic;
+    opacity: 0.8;
+}
+
+.send-area button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.send-area input:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
 .user-message {
     align-self: flex-end;
     background: linear-gradient(135deg, #38bdf8, #0284c7);
