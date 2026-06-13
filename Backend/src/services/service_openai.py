@@ -1,5 +1,6 @@
 import base64
 import json
+import re
 import time
 import uuid
 from pathlib import Path
@@ -56,23 +57,44 @@ TOOLS = [
 class OpenAiService:
 
     @staticmethod
-    def ask_chatGpt(history: list):
-        response = client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=history
-        )
+    def _detect_user_language(history: list) -> str:
+        for message in reversed(history):
+            if message.get("role") == "user":
+                content = message.get("content", "")
+                if re.search(r"[\u0590-\u05FF]", content):
+                    return "he"
+                return "en"
+        return "en"
 
-        return response.choices[0].message.content
+    @staticmethod
+    def _media_error_message(history: list, error: Exception) -> str:
+        if OpenAiService._detect_user_language(history) == "he":
+            return f"מצטערים, יצירת המדיה נכשלה: {str(error)}"
+        return f"Sorry, media generation failed: {str(error)}"
 
     @staticmethod
     def ask_chatGpt_with_tools(history: list):
+        user_lang = OpenAiService._detect_user_language(history)
+
+        if user_lang == "he":
+            language_rule = (
+                "Reply ONLY in Hebrew. Never use English, Russian, or any other language. "
+                "Never mix languages in one response."
+            )
+        else:
+            language_rule = (
+                "Reply ONLY in English. Never use Hebrew, Russian, or any other language. "
+                "Never mix languages in one response."
+            )
+
         system_message = {
             "role": "system",
             "content": (
                 "You are a helpful assistant. "
                 "When the user asks to create or generate an image, picture, or photo, use generate_image. "
                 "When the user asks to create or generate a video or animation, use generate_video. "
-                "Always write media prompts in English, even if the user writes in another language. "
+                "Write media tool prompts in English only (internal use, not shown to the user). "
+                f"{language_rule} "
                 "For all other requests, respond with text only."
             ),
         }
@@ -104,10 +126,37 @@ class OpenAiService:
             except Exception as e:
                 return {
                     "type": "text",
-                    "content": f"Sorry, media generation failed: {str(e)}",
+                    "content": OpenAiService._media_error_message(history, e),
                 }
 
-        return {"type": "text", "content": message.content or ""}
+        content = message.content or ""
+        if OpenAiService._contains_forbidden_script(content):
+            content = OpenAiService._rewrite_in_allowed_language(content, user_lang, history)
+
+        return {"type": "text", "content": content}
+
+    @staticmethod
+    def _contains_forbidden_script(text: str) -> bool:
+        return bool(re.search(r"[\u0400-\u04FF]", text))
+
+    @staticmethod
+    def _rewrite_in_allowed_language(text: str, user_lang: str, history: list) -> str:
+        target = "Hebrew" if user_lang == "he" else "English"
+        fix_response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {
+                    "role": "system",
+                    "content": (
+                        f"Rewrite the assistant message in {target} only. "
+                        "Remove any Russian or other languages. Keep the same meaning."
+                    ),
+                },
+                *history[-4:],
+                {"role": "assistant", "content": text},
+            ],
+        )
+        return fix_response.choices[0].message.content or text
 
     @staticmethod
     def generate_image(prompt: str):

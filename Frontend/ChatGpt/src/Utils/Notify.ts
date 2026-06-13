@@ -1,5 +1,6 @@
-import { Notyf } from "notyf"; // npm i notyf
+import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
+import { detectLanguage, t } from "./Locale";
 
 class Notify {
 
@@ -7,26 +8,42 @@ class Notify {
         position: { x: "center", y: "top" },
         duration: 3000,
         dismissible: true,
-        ripple: true // Ripple = אדווה = גל קטן
+        ripple: true,
     });
 
     public success(message: string): void {
         this.notyf.success(message);
     }
 
-    public error(err: any): void {
+    public error(err: unknown): void {
         const message = this.extractErrorMessage(err);
         this.notyf.error(message);
     }
 
-    private extractErrorMessage(err: any): string {
-        if(typeof err === "string") return err; // String error.
-        if(typeof err?.response?.data === "string") return err.response.data; // Axios error
-        if(typeof err?.response?.data?.message === "string") return err.response.data.message;
-        if(typeof err?.message === "string") return err.message; // throw new Error("...")
-        return "Some error, please try again.";
-    }
+    private extractErrorMessage(err: unknown): string {
+        if (typeof err === "string") return err;
 
+        if (err && typeof err === "object") {
+            const axiosLike = err as {
+                response?: { data?: unknown };
+                message?: string;
+            };
+
+            if (typeof axiosLike.response?.data === "string") {
+                return axiosLike.response.data;
+            }
+
+            const data = axiosLike.response?.data;
+            if (data && typeof data === "object" && "message" in data) {
+                const message = (data as { message?: unknown }).message;
+                if (typeof message === "string") return message;
+            }
+
+            if (typeof axiosLike.message === "string") return axiosLike.message;
+        }
+
+        return t("genericError", detectLanguage(navigator.language));
+    }
 }
 
 export const notify = new Notify();

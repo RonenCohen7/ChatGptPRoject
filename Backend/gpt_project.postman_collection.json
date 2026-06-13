@@ -7,75 +7,28 @@
   },
   "item": [
     {
-      "name": "ask_gpt",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n    \"conversation_id\": \"6a1d68ec71dfe566b47f1e88\",\n    \"content\": \"שלום מה נשמע\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:4000/api/chat",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "4000",
-          "path": [
-            "api",
-            "chat"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Conversation",
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      },
+      "name": "Get All Conversations",
       "request": {
         "method": "GET",
         "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n   \n    \"content\": \"שלום\"\n   \n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
         "url": {
-          "raw": "http://localhost:4000/api/chat/6a1d638ede001c8c98cf0793",
+          "raw": "http://localhost:4000/api/conversation",
           "protocol": "http",
-          "host": [
-            "localhost"
-          ],
+          "host": ["localhost"],
           "port": "4000",
-          "path": [
-            "api",
-            "chat",
-            "6a1d638ede001c8c98cf0793"
-          ]
+          "path": ["api", "conversation"]
         }
       },
       "response": []
     },
     {
-      "name": "conversation",
+      "name": "Create Conversation",
       "request": {
         "method": "POST",
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"title\": \"new Conversation\"\n}",
+          "raw": "{\n    \"title\": \"New Conversation\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -85,14 +38,9 @@
         "url": {
           "raw": "http://localhost:4000/api/conversation",
           "protocol": "http",
-          "host": [
-            "localhost"
-          ],
+          "host": ["localhost"],
           "port": "4000",
-          "path": [
-            "api",
-            "conversation"
-          ]
+          "path": ["api", "conversation"]
         }
       },
       "response": []
@@ -102,9 +50,39 @@
       "request": {
         "method": "DELETE",
         "header": [],
+        "url": {
+          "raw": "http://localhost:4000/api/conversation/{{conversation_id}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "4000",
+          "path": ["api", "conversation", "{{conversation_id}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Messages By Conversation",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:4000/api/chat/{{conversation_id}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "4000",
+          "path": ["api", "chat", "{{conversation_id}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Send Text Message",
+      "request": {
+        "method": "POST",
+        "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"title\": \"שיחה ראשונה\"\n}",
+          "raw": "{\n    \"conversation_id\": \"{{conversation_id}}\",\n    \"content\": \"Hello, how are you?\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -112,17 +90,59 @@
           }
         },
         "url": {
-          "raw": "http://localhost:4000/api/conversation/6a1d45b099f4887948249b4b",
+          "raw": "http://localhost:4000/api/chat",
           "protocol": "http",
-          "host": [
-            "localhost"
-          ],
+          "host": ["localhost"],
           "port": "4000",
-          "path": [
-            "api",
-            "conversation",
-            "6a1d45b099f4887948249b4b"
-          ]
+          "path": ["api", "chat"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Send Image Request",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"conversation_id\": \"{{conversation_id}}\",\n    \"content\": \"Create an image of a cat on a windowsill\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:4000/api/chat",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "4000",
+          "path": ["api", "chat"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Send Video Request",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"conversation_id\": \"{{conversation_id}}\",\n    \"content\": \"Create a video of a cat on a windowsill\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:4000/api/chat",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "4000",
+          "path": ["api", "chat"]
         }
       },
       "response": []

@@ -1,10 +1,10 @@
 # ChatGPT Project – Full-Stack Overview
 
-The **ChatGPT Project** is a full-stack web application that lets a user create conversations, send messages, and receive AI-generated answers from OpenAI. A **React + TypeScript** client talks to a **Python FastAPI** backend, which stores conversations and messages in **MongoDB** and forwards chat history to the **OpenAI API** to generate assistant replies.
+The **ChatGPT Project** is a full-stack web application that lets a user create conversations, send messages, and receive AI-generated answers from OpenAI. The assistant can also generate **images** and **videos** when requested in chat. A **React + TypeScript** client talks to a **Python FastAPI** backend, which stores conversations and messages in **MongoDB** and forwards chat history to the **OpenAI API**.
 
 ## Tech Stack
 
-**Frontend:** React 19, TypeScript, Vite, Axios, React Router DOM
+**Frontend:** React 19, TypeScript, Vite, Axios, React Router DOM, Notyf
 
 **Backend:** Python, FastAPI, Uvicorn, Pydantic, PyMongo (MongoDB), OpenAI SDK, python-dotenv
 
@@ -17,7 +17,7 @@ The **ChatGPT Project** is a full-stack web application that lets a user create 
 The system has two parts that communicate over a REST API:
 
 - **Frontend (`Frontend/ChatGpt`)** – A Vite single-page app. Services (`ConversationService`, `chatService`) call the backend with Axios; URLs are centralized in `src/Utils/AppConfig.ts`.
-- **Backend (`Backend`)** – A FastAPI server (port **4000**). Controllers expose REST routes, services hold the business logic, a small data-access layer (`Dal`) wraps PyMongo, and `OpenAiService` calls OpenAI (`gpt-4o-mini`).
+- **Backend (`Backend`)** – A FastAPI server (port **4000**). Controllers expose REST routes, services hold the business logic, a small data-access layer (`Dal`) wraps PyMongo, and `OpenAiService` calls OpenAI with GPT tool calling for text, image, and video generation.
 
 CORS is configured on the backend to allow the Vite dev origin (`http://localhost:5173`).
 
@@ -30,7 +30,16 @@ CORS is configured on the backend to allow the Vite dev origin (`http://localhos
 | `POST` | `/api/conversation`        | Create a conversation |
 | `DELETE` | `/api/conversation/{_id}` | Delete a conversation |
 | `GET`  | `/api/chat/{_id}`          | Get messages of a conversation |
-| `POST` | `/api/chat`                | Send a message and get the assistant reply |
+| `POST` | `/api/chat`                | Send a message and get the assistant reply (text / image / video) |
+| `GET`  | `/api/media/files/{filename}` | Serve generated image or video files |
+
+### Message types
+
+Messages support a `content_type` field:
+
+- `text` – plain text reply
+- `image` – URL to a generated PNG
+- `video` – URL to a generated MP4
 
 ## Repository layout
 
@@ -38,21 +47,24 @@ CORS is configured on the backend to allow the Vite dev origin (`http://localhos
 ChatGptProject/
 ├── Backend/
 │   ├── src/
-│   │   ├── app.py                  # FastAPI app, CORS, routers, uvicorn entry (port 4000)
+│   │   ├── app.py                  # FastAPI app, CORS, routers, static files, uvicorn entry (port 4000)
 │   │   ├── controllers/            # chat_controller, conversation_controller
 │   │   ├── services/               # conversation_service, message_service, service_openai
 │   │   ├── models/                 # conversation_model, message_model (Pydantic)
 │   │   ├── middleware/             # exception_handler, logger_middleware
 │   │   └── utils/                  # app_config (.env), dal (MongoDB)
+│   ├── generated/                  # Generated media files (gitignored)
+│   ├── gpt_project.postman_collection.json
 │   └── requirements.txt
 ├── Frontend/
 │   └── ChatGpt/                    # React + Vite SPA
 │       └── src/
 │           ├── main.tsx, App.tsx
-│           ├── components/         # About, PageArea/Home
+│           ├── components/         # About, PageArea/Home, Page404, Layout
 │           ├── Models/             # ConversationModel, MessageModel
 │           ├── Service/            # ConversationService, chatService
-│           └── Utils/              # AppConfig (API URLs), Http
+│           ├── assets/             # Static images
+│           └── Utils/              # AppConfig (API URLs), Notify, UseTitle
 ├── Database/
 ├── .env.example
 ├── .gitignore
@@ -64,7 +76,7 @@ ChatGptProject/
 - Python 3.12+ (project developed on 3.14)
 - Node 18+ and npm
 - MongoDB running locally (`mongodb://localhost:27017`)
-- An OpenAI API key
+- An OpenAI API key (image and video generation require API access)
 
 ## Environment setup
 
@@ -102,10 +114,14 @@ Make sure MongoDB is running before you start the server.
 ```bash
 cd Frontend/ChatGpt
 npm install
-npm run dev                      # open http://localhost:5173
+npm start                        # or: npm run dev — open http://localhost:5173
 ```
 
 The frontend expects the backend at `http://localhost:4000` (see `src/Utils/AppConfig.ts`).
+
+## Testing with Postman
+
+Import `Backend/gpt_project.postman_collection.json` to test all API endpoints, including chat with image and video generation.
 
 ## End users vs. developers
 

@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import "./Page404.css";
+import { useTitle } from "../../../Utils/UseTitle";
 
 export function Page404() {
+    useTitle("404 - Page Not Found");
 
     const navigate = useNavigate();
 

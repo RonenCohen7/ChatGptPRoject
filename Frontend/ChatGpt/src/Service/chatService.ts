@@ -1,38 +1,28 @@
-import axios from "axios"
-import { appConfig } from "../Utils/AppConfig"
-import type { Message } from "../Models/MessageModel"
+import axios from "axios";
+import { appConfig } from "../Utils/AppConfig";
+import type { Message } from "../Models/MessageModel";
 
 const axiosInstance = axios.create({
     timeout: 300000,
-})
-
-
+});
 
 class ChatService {
 
-
-    //Get message by Conversation Id
-    public async getMessagesByConversation(conversationId:string):Promise<Message[]>{
+    public async getMessagesByConversation(conversationId: string): Promise<Message[]> {
         const response = await axiosInstance.get<Message[]>(
             `${appConfig.chatUrl}/${conversationId}`
         );
-        return response.data
+        return response.data;
     }
 
-
-
-
-    public async sendMessage(conversationId: string, content: string){
+    public async sendMessage(conversationId: string, content: string) {
         const response = await axiosInstance.post(appConfig.chatUrl, {
             conversation_id: conversationId,
-            content: content
+            content: content,
         });
 
-        return response.data
+        return response.data;
     }
-
-
 }
-
 
 export const chatService = new ChatService();
